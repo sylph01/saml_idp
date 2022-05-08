@@ -15,14 +15,14 @@ module SamlIdp
     def fresh
       builder = Builder::XmlMarkup.new
       generated_reference_id do
-        builder.EntityDescriptor ID: reference_string,
+        builder.md :EntityDescriptor, ID: reference_string,
           "xmlns:md" => Saml::XML::Namespaces::METADATA,
           "xmlns:saml" => Saml::XML::Namespaces::ASSERTION,
           "xmlns:ds" => Saml::XML::Namespaces::SIGNATURE,
           entityID: entity_id do |entity|
             sign entity
 
-            entity.IDPSSODescriptor protocolSupportEnumeration: protocol_enumeration do |descriptor|
+            entity.md :IDPSSODescriptor, protocolSupportEnumeration: protocol_enumeration do |descriptor|
               build_key_descriptor descriptor
               build_endpoint descriptor, [
                 { tag: 'SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' },
@@ -36,7 +36,7 @@ module SamlIdp
               build_attribute descriptor
             end
 
-            entity.AttributeAuthorityDescriptor protocolSupportEnumeration: protocol_enumeration do |authority_descriptor|
+            entity.md :AttributeAuthorityDescriptor, protocolSupportEnumeration: protocol_enumeration do |authority_descriptor|
               build_key_descriptor authority_descriptor
               build_organization authority_descriptor
               build_contact authority_descriptor
@@ -55,9 +55,9 @@ module SamlIdp
     alias_method :raw, :fresh
 
     def build_key_descriptor(el)
-      el.KeyDescriptor use: "signing" do |key_descriptor|
-        key_descriptor.KeyInfo xmlns: Saml::XML::Namespaces::SIGNATURE do |key_info|
-          key_info.X509Data do |x509|
+      el.md :KeyDescriptor, use: "signing" do |key_descriptor|
+        key_descriptor.ds :KeyInfo, xmlns: Saml::XML::Namespaces::SIGNATURE do |key_info|
+          key_info.ds :X509Data do |x509|
             x509.X509Certificate x509_certificate
           end
         end
@@ -67,7 +67,7 @@ module SamlIdp
 
     def build_name_id_formats(el)
       name_id_formats.each do |format|
-        el.NameIDFormat format
+        el.md :NameIDFormat, format
       end
     end
     private :build_name_id_formats
