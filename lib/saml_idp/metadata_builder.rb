@@ -34,7 +34,7 @@ module SamlIdp
                     { tag: 'md:SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' },
                     { tag: 'md:SingleLogoutService', url: single_logout_service_redirect_location, bind: 'HTTP-Redirect'}
                   ]
-                  build_name_id_formats descriptor
+                  # build_name_id_formats descriptor
                   build_endpoint descriptor, [
                     { tag: 'md:SingleSignOnService', url: single_service_post_location, bind: 'HTTP-POST' },
                     { tag: 'md:SingleSignOnService', url: single_service_redirect_location, bind: 'HTTP-Redirect'}
@@ -49,7 +49,7 @@ module SamlIdp
                   build_endpoint authority_descriptor, [
                     { tag: 'md:AttributeService', url: attribute_service_location, bind: 'HTTP-Redirect' }
                   ]
-                  build_name_id_formats authority_descriptor
+                  # build_name_id_formats authority_descriptor
                   build_attribute authority_descriptor
                 end
 
