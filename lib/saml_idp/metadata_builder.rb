@@ -31,13 +31,13 @@ module SamlIdp
                 entity.md :IDPSSODescriptor, protocolSupportEnumeration: protocol_enumeration do |descriptor|
                   build_key_descriptor descriptor
                   build_endpoint descriptor, [
-                    { tag: 'SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' },
-                    { tag: 'SingleLogoutService', url: single_logout_service_redirect_location, bind: 'HTTP-Redirect'}
+                    { tag: 'md:SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' },
+                    { tag: 'md:SingleLogoutService', url: single_logout_service_redirect_location, bind: 'HTTP-Redirect'}
                   ]
                   build_name_id_formats descriptor
                   build_endpoint descriptor, [
-                    { tag: 'SingleSignOnService', url: single_service_post_location, bind: 'HTTP-POST' },
-                    { tag: 'SingleSignOnService', url: single_service_redirect_location, bind: 'HTTP-Redirect'}
+                    { tag: 'md:SingleSignOnService', url: single_service_post_location, bind: 'HTTP-POST' },
+                    { tag: 'md:SingleSignOnService', url: single_service_redirect_location, bind: 'HTTP-Redirect'}
                   ]
                   build_attribute descriptor
                 end
@@ -47,7 +47,7 @@ module SamlIdp
                   build_organization authority_descriptor
                   build_contact authority_descriptor
                   build_endpoint authority_descriptor, [
-                    { tag: 'AttributeService', url: attribute_service_location, bind: 'HTTP-Redirect' }
+                    { tag: 'md:AttributeService', url: attribute_service_location, bind: 'HTTP-Redirect' }
                   ]
                   build_name_id_formats authority_descriptor
                   build_attribute authority_descriptor
