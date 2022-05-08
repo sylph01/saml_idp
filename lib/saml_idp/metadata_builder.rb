@@ -42,16 +42,16 @@ module SamlIdp
                   build_attribute descriptor
                 end
 
-                entity.md :AttributeAuthorityDescriptor, protocolSupportEnumeration: protocol_enumeration do |authority_descriptor|
-                  build_key_descriptor authority_descriptor
-                  build_organization authority_descriptor
-                  build_contact authority_descriptor
-                  build_endpoint authority_descriptor, [
-                    { tag: 'md:AttributeService', url: attribute_service_location, bind: 'HTTP-Redirect' }
-                  ]
-                  # build_name_id_formats authority_descriptor
-                  build_attribute authority_descriptor
-                end
+                # entity.md :AttributeAuthorityDescriptor, protocolSupportEnumeration: protocol_enumeration do |authority_descriptor|
+                #   build_key_descriptor authority_descriptor
+                #   build_organization authority_descriptor
+                #   build_contact authority_descriptor
+                #   build_endpoint authority_descriptor, [
+                #     { tag: 'md:AttributeService', url: attribute_service_location, bind: 'HTTP-Redirect' }
+                #   ]
+                #   build_name_id_formats authority_descriptor
+                #   build_attribute authority_descriptor
+                # end
 
                 build_organization entity
                 build_contact entity
