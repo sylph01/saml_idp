@@ -16,7 +16,7 @@ module SamlIdp
       builder = Builder::XmlMarkup.new
       generated_reference_id do
         builder.EntityDescriptor ID: reference_string,
-          xmlns: Saml::XML::Namespaces::METADATA,
+          "xmlns:md" => Saml::XML::Namespaces::METADATA,
           "xmlns:saml" => Saml::XML::Namespaces::ASSERTION,
           "xmlns:ds" => Saml::XML::Namespaces::SIGNATURE,
           entityID: entity_id do |entity|
@@ -25,12 +25,12 @@ module SamlIdp
             entity.IDPSSODescriptor protocolSupportEnumeration: protocol_enumeration do |descriptor|
               build_key_descriptor descriptor
               build_endpoint descriptor, [
-                { tag: 'SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' }, 
+                { tag: 'SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' },
                 { tag: 'SingleLogoutService', url: single_logout_service_redirect_location, bind: 'HTTP-Redirect'}
               ]
               build_name_id_formats descriptor
               build_endpoint descriptor, [
-                { tag: 'SingleSignOnService', url: single_service_post_location, bind: 'HTTP-POST' }, 
+                { tag: 'SingleSignOnService', url: single_service_post_location, bind: 'HTTP-POST' },
                 { tag: 'SingleSignOnService', url: single_service_redirect_location, bind: 'HTTP-Redirect'}
               ]
               build_attribute descriptor
