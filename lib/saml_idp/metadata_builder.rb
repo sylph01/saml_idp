@@ -15,48 +15,42 @@ module SamlIdp
     def fresh
       builder = Builder::XmlMarkup.new
       generated_reference_id do
-        builder.md :EntitiesDescriptor, Name: "urn:hoge",
+        builder.md :EntityDescriptor, ID: reference_string,
           "xmlns"    => Saml::XML::Namespaces::METADATA,
           "xmlns:md" => Saml::XML::Namespaces::METADATA,
           "xmlns:saml" => Saml::XML::Namespaces::ASSERTION,
-          "xmlns:ds" => Saml::XML::Namespaces::SIGNATURE do |entities|
-            entities.md :EntityDescriptor, ID: reference_string,
-              "xmlns"    => Saml::XML::Namespaces::METADATA,
-              "xmlns:md" => Saml::XML::Namespaces::METADATA,
-              "xmlns:saml" => Saml::XML::Namespaces::ASSERTION,
-              "xmlns:ds" => Saml::XML::Namespaces::SIGNATURE,
-              entityID: entity_id do |entity|
-                sign entity
+          "xmlns:ds" => Saml::XML::Namespaces::SIGNATURE,
+          entityID: entity_id do |entity|
+            sign entity
 
-                entity.md :IDPSSODescriptor, protocolSupportEnumeration: protocol_enumeration do |descriptor|
-                  build_key_descriptor descriptor
-                  build_endpoint descriptor, [
-                    { tag: 'md:SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' },
-                    { tag: 'md:SingleLogoutService', url: single_logout_service_redirect_location, bind: 'HTTP-Redirect'}
-                  ]
-                  build_name_id_formats descriptor
-                  build_endpoint descriptor, [
-                    { tag: 'md:SingleSignOnService', url: single_service_post_location, bind: 'HTTP-POST' },
-                    { tag: 'md:SingleSignOnService', url: single_service_redirect_location, bind: 'HTTP-Redirect'}
-                  ]
-                  build_attribute descriptor
-                end
+            entity.md :IDPSSODescriptor, protocolSupportEnumeration: protocol_enumeration do |descriptor|
+              build_key_descriptor descriptor
+              build_endpoint descriptor, [
+                { tag: 'md:SingleLogoutService', url: single_logout_service_post_location, bind: 'HTTP-POST' },
+                { tag: 'md:SingleLogoutService', url: single_logout_service_redirect_location, bind: 'HTTP-Redirect'}
+              ]
+              build_name_id_formats descriptor
+              build_endpoint descriptor, [
+                { tag: 'md:SingleSignOnService', url: single_service_post_location, bind: 'HTTP-POST' },
+                { tag: 'md:SingleSignOnService', url: single_service_redirect_location, bind: 'HTTP-Redirect'}
+              ]
+              build_attribute descriptor
+            end
 
-                # entity.md :AttributeAuthorityDescriptor, protocolSupportEnumeration: protocol_enumeration do |authority_descriptor|
-                #   build_key_descriptor authority_descriptor
-                #   build_organization authority_descriptor
-                #   build_contact authority_descriptor
-                #   build_endpoint authority_descriptor, [
-                #     { tag: 'md:AttributeService', url: attribute_service_location, bind: 'HTTP-Redirect' }
-                #   ]
-                #   build_name_id_formats authority_descriptor
-                #   build_attribute authority_descriptor
-                # end
+            # entity.md :AttributeAuthorityDescriptor, protocolSupportEnumeration: protocol_enumeration do |authority_descriptor|
+            #   build_key_descriptor authority_descriptor
+            #   build_organization authority_descriptor
+            #   build_contact authority_descriptor
+            #   build_endpoint authority_descriptor, [
+            #     { tag: 'md:AttributeService', url: attribute_service_location, bind: 'HTTP-Redirect' }
+            #   ]
+            #   build_name_id_formats authority_descriptor
+            #   build_attribute authority_descriptor
+            # end
 
-                build_organization entity
-                build_contact entity
-              end
-        end
+            build_organization entity
+            build_contact entity
+          end
       end
     end
     alias_method :raw, :fresh
